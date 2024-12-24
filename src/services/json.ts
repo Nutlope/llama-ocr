@@ -32,6 +32,27 @@ export function validateJsonStructure(output: any, expected: Record<string, any>
   return validate(output);
 }
 
+function extractJsonFromString(str: string): string {
+  const codeBlockMatch = str.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
+  if (codeBlockMatch) {
+    return codeBlockMatch[1];
+  }
+  return str;
+}
+
+function parseJsonSafely(jsonString: string) {
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    const extractedJson = extractJsonFromString(jsonString);
+    try {
+      return JSON.parse(extractedJson);
+    } catch (innerError) {
+      throw new Error(`Failed to parse JSON: ${innerError.message}\nOriginal string: ${jsonString}`);
+    }
+  }
+}
+
 export async function getJson({
   together,
   visionLLM,
@@ -57,22 +78,24 @@ export async function getJson({
     });
     console.log("this is the result from the model: \n ", result);
 
-    return JSON.parse(result);
+    return parseJsonSafely(result);
   }
 
   let attempts = 0;
   const maxAttempts = 3;
 
   while (attempts < maxAttempts) {
+    let structuredPrompt = JSON_STRUCTURED_PROMPT(jsonStructure)
+    console.log(structuredPrompt)
     try {
       const result = await processWithTogetherAI({
         visionLLM,
-        systemPrompt : JSON_STRUCTURED_PROMPT(jsonStructure),
+        systemPrompt : structuredPrompt,
         finalImageUrl,
         together,
       });
 
-      const jsonResult = JSON.parse(result);
+      const jsonResult = parseJsonSafely(result);
       console.log("this is the result from the model: \n ", jsonResult);
       
       if (validateJsonStructure(jsonResult, jsonStructure)) {

@@ -25,25 +25,25 @@ const receiptStructure = {
 };
 
 async function main() {
-  // console.log("\n=== Testing Markdown Output ===");
+  console.log("\n=== Testing Markdown Output ===");
   
-  // // Test 1: Local file markdown
-  // console.log("\nTest 1: Local Receipt - Markdown");
-  // let localMarkdown = await ocr({
-  //   filePath: LOCAL_RECEIPT,
-  //   apiKey: process.env.TOGETHER_API_KEY,
-  // });
-  // console.log(localMarkdown);
+  // Test 1: Local file markdown
+  console.log("\nTest 1: Local Receipt - Markdown");
+  let localMarkdown = await ocr({
+    filePath: LOCAL_RECEIPT,
+    apiKey: process.env.TOGETHER_API_KEY,
+  });
+  console.log(localMarkdown);
 
-  // // Test 2: Remote file markdown
-  // console.log("\nTest 2: Remote Receipt - Markdown");
-  // let remoteMarkdown = await ocr({
-  //   filePath: REMOTE_RECEIPT,
-  //   apiKey: process.env.TOGETHER_API_KEY,
-  // });
-  // console.log(remoteMarkdown);
+  // Test 2: Remote file markdown
+  console.log("\nTest 2: Remote Receipt - Markdown");
+  let remoteMarkdown = await ocr({
+    filePath: REMOTE_RECEIPT,
+    apiKey: process.env.TOGETHER_API_KEY,
+  });
+  console.log(remoteMarkdown);
 
-  // console.log("\n=== Testing JSON Output (No Structure) ===");
+  console.log("\n=== Testing JSON Output (No Structure) ===");
 
   // Test 3: Local file JSON (no structure)
   console.log("\nTest 3: Local Receipt - JSON (No Structure)");
