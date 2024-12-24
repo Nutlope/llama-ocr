@@ -28,6 +28,8 @@
     "Llama"
   ],
   "dependencies": {
+    "ajv": "^8.17.1",
+    "llama-ocr": "^0.0.6",
     "together-ai": "^0.9.0"
   }
 }
