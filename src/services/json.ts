@@ -27,6 +27,7 @@ export function validateJsonStructure(output: any, expected: Record<string, any>
   }
 
   const schema = createSchemaFromStructure(expected);
+  console.log("this is the json schema being used")
   const validate = ajv.compile(schema);
   
   return validate(output);
@@ -96,7 +97,7 @@ export async function getJson({
       });
 
       const jsonResult = parseJsonSafely(result);
-      console.log("this is the result from the model: \n ", jsonResult);
+      console.log("this is the result from the model: \n ", JSON.stringify(jsonResult, null, 2));
       
       if (validateJsonStructure(jsonResult, jsonStructure)) {
         return jsonResult;

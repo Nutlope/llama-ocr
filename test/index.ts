@@ -3,7 +3,7 @@ import { ocr } from "../src/index";
 const REMOTE_RECEIPT = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/ReceiptSwiss.jpg/1920px-ReceiptSwiss.jpg";
 const LOCAL_RECEIPT = "./test/trader-joes-receipt.jpg";
 
-// Receipt structure based on Trader Joe's receipt
+
 const receiptStructure = {
   store: {
     name: "string",
@@ -27,21 +27,21 @@ const receiptStructure = {
 async function main() {
   console.log("\n=== Testing Markdown Output ===");
   
-  // Test 1: Local file markdown
-  console.log("\nTest 1: Local Receipt - Markdown");
-  let localMarkdown = await ocr({
-    filePath: LOCAL_RECEIPT,
-    apiKey: process.env.TOGETHER_API_KEY,
-  });
-  console.log(localMarkdown);
+  // // Test 1: Local file markdown
+  // console.log("\nTest 1: Local Receipt - Markdown");
+  // let localMarkdown = await ocr({
+  //   filePath: LOCAL_RECEIPT,
+  //   apiKey: process.env.TOGETHER_API_KEY,
+  // });
+  // console.log(localMarkdown);
 
-  // Test 2: Remote file markdown
-  console.log("\nTest 2: Remote Receipt - Markdown");
-  let remoteMarkdown = await ocr({
-    filePath: REMOTE_RECEIPT,
-    apiKey: process.env.TOGETHER_API_KEY,
-  });
-  console.log(remoteMarkdown);
+  // // Test 2: Remote file markdown
+  // console.log("\nTest 2: Remote Receipt - Markdown");
+  // let remoteMarkdown = await ocr({
+  //   filePath: REMOTE_RECEIPT,
+  //   apiKey: process.env.TOGETHER_API_KEY,
+  // });
+  // console.log(remoteMarkdown);
 
   console.log("\n=== Testing JSON Output (No Structure) ===");
 
