@@ -105,7 +105,6 @@ export async function getJson({
 
   while (attempts < maxAttempts) {
     let structuredPrompt = JSON_STRUCTURED_PROMPT(jsonStructure)
-    console.log(structuredPrompt)
     try {
       const result = await processWithTogetherAI({
         visionLLM,
@@ -115,7 +114,6 @@ export async function getJson({
       });
 
       const jsonResult = parseJsonSafely(result);
-      console.log("this is the result from the model: \n ", JSON.stringify(jsonResult, null, 2));
       
       if (validateJsonStructure(jsonResult, jsonStructure)) {
         return jsonResult;
