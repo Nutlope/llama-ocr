@@ -4,34 +4,50 @@ import { isRemoteFile, encodeImage, processWithTogetherAI } from "../utils";
 import { JSON_DEFAULT_PROMPT, JSON_STRUCTURED_PROMPT } from "../prompts";
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
-export function validateJsonStructure(output: any, expected: Record<string, any>): boolean {
-  const ajv = new Ajv();
-
-  function createSchemaFromStructure(structure: Record<string, any>): any {
-    const properties: Record<string, any> = {};
-    
-    for (const [key, value] of Object.entries(structure)) {
-      if (typeof value === 'object' && value !== null) {
-        properties[key] = createSchemaFromStructure(value);
-      } else {
-        properties[key] = { type: typeof value };
-      }
-    }
-
-    return {
-      type: 'object',
-      required: Object.keys(structure),
-      properties,
-      additionalProperties: false
-    };
-  }
-
-  const schema = createSchemaFromStructure(expected);
-  console.log("this is the json schema being used")
-  const validate = ajv.compile(schema);
+export function validateJsonStructure(output: any, expected: Record<any, any>): boolean {
+    const ajv = new Ajv();
   
-  return validate(output);
-}
+    function createSchemaFromStructure(structure: Record<string, any>): any {
+      if (Array.isArray(structure)) {
+        // Handle array type
+        return {
+          type: 'array',
+          items: createSchemaFromStructure(structure[0])
+        };
+      }
+  
+      if (typeof structure === 'object' && structure !== null) {
+        const properties: Record<string, any> = {};
+        
+        for (const [key, value] of Object.entries(structure)) {
+          if (typeof value === 'object' && value !== null) {
+            properties[key] = createSchemaFromStructure(value);
+          } else {
+            properties[key] = {
+              type: value.toLowerCase() 
+            };
+          }
+        }
+  
+        return {
+          type: 'object',
+          required: Object.keys(structure),
+          properties,
+          additionalProperties: false
+        };
+      }
+  
+      // Handle primitive type definitions
+      return {
+        type: structure.toLowerCase()
+      };
+    }
+  
+    const schema = createSchemaFromStructure(expected);
+    const validate = ajv.compile(schema);
+    
+    return validate(output);
+  }
 
 function extractJsonFromString(str: string): string {
   const codeBlockMatch = str.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
@@ -59,11 +75,13 @@ export async function getJson({
   visionLLM,
   filePath,
   jsonStructure = null,
+  reattempts = 3
 }: {
   together: Together;
   visionLLM: string;
   filePath: string;
   jsonStructure?: Record< string | number | symbol, JsonValue> | null;
+  reattempts?: number;
 }) {
   const finalImageUrl = isRemoteFile(filePath)
     ? filePath
@@ -77,13 +95,13 @@ export async function getJson({
       finalImageUrl,
       together,
     });
-    console.log("this is the result from the model: \n ", result);
 
     return parseJsonSafely(result);
   }
+  // Using a predefined structure and since this is prone to failing we will implement object structure checking and upto 3 reattempts
 
   let attempts = 0;
-  const maxAttempts = 3;
+  const maxAttempts = reattempts;
 
   while (attempts < maxAttempts) {
     let structuredPrompt = JSON_STRUCTURED_PROMPT(jsonStructure)

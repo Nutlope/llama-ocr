@@ -28,7 +28,7 @@ export async function ocr({
   try {
     switch (outputFormat) {
       case "json":
-        return await getJson({ together, visionLLM, filePath, jsonStructure });
+        return await getJson({ together, visionLLM, filePath, jsonStructure});
       case "markdown":
         return await getMarkDown({ together, visionLLM, filePath });
       default:
