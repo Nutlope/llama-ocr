@@ -37,9 +37,11 @@ async function getMarkDown({
 
   Requirements:
 
+  - Language Support: Recognize and accurately process Farsi (Persian) text, ensuring proper handling of right-to-left (RTL) text direction. Preserve Farsi characters and diacritics without alternations.
   - Output Only Markdown: Return solely the Markdown content without any additional explanations or comments.
   - No Delimiters: Do not use code fences or delimiters like \`\`\`markdown.
   - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
+  - Formating: Maintain proper formating for RTL content, such as aligning text to the right for Farsi.
   `;
 
   const finalImageUrl = isRemoteFile(filePath)
