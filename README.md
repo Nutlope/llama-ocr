@@ -16,12 +16,61 @@
 
 ## Usage
 
+### Markdown
+
 ```js
 import { ocr } from "llama-ocr";
 
 const markdown = await ocr({
   filePath: "./trader-joes-receipt.jpg", // path to your image (soon PDF!)
   apiKey: process.env.TOGETHER_API_KEY, // Together AI API key
+});
+```
+
+### JSON
+
+#### JSON output with LLM inferred JSON format
+```js
+import { ocr } from "llama-ocr";
+
+const jsonOutput = await ocr({
+  filePath: "./trader-joes-receipt.jpg",
+  apiKey: process.env.TOGETHER_API_KEY, // Together AI API key
+  outputFormat: "json", // Default: markdown. Specify "json" for JSON output.
+});
+```
+
+#### JSON output with user defined format
+```js
+import { ocr } from "llama-ocr";
+
+const receiptStructure = {
+  store: {
+    name: "string",
+    address: "string",
+    phone: "string",
+  },
+  transaction: {
+    type: "string",
+    items: [
+      {
+        name: "string",
+        price: "number",
+      },
+    ],
+    total: "number",
+    payment: {
+      method: "string",
+      amount: "number",
+    },
+  },
+};
+
+const jsonOutput = await ocr({
+  filePath: "./trader-joes-receipt.jpg", // Path to your image
+  apiKey: process.env.TOGETHER_API_KEY, // Together AI API key
+  outputFormat: "json", // Default: markdown
+  jsonStructure: receiptStructure, // JSON structure with type definitions
 });
 ```
 ## Hosted Demo
@@ -40,7 +89,7 @@ You can control this with the `model` option which is set to `Llama-3.2-90B-Visi
 - [x] Add support for remote images OCR
 - [ ] Add support for single page PDFs
 - [ ] Add support for multi-page PDFs OCR (take screenshots of PDF & feed to vision model)
-- [ ] Add support for JSON output in addition to markdown
+- [x] Add support for JSON output in addition to markdown
 
 ## Credit
 
