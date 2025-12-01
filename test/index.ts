@@ -1,14 +1,24 @@
-import { ocr } from "../src/index";
+import { describe, it, expect } from 'vitest';
+import { ocr } from '../src/index';
 
-async function main() {
-  let markdown = await ocr({
-    filePath:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/ReceiptSwiss.jpg/1920px-ReceiptSwiss.jpg",
-    // filePath: "./test/trader-joes-receipt.jpg",
-    apiKey: process.env.TOGETHER_API_KEY,
+describe('Remote image URL', () => {
+  it('should perform OCR on remote image', async () => {
+    const markdown = await ocr({
+      filePath: "https://i.ibb.co/6cjLQ6yp/Receipt-Swiss.jpg",
+      apiKey: process.env.TOGETHER_API_KEY,
+    });
+    expect(markdown).toBeTruthy();
+    expect(typeof markdown).toBe('string');
   });
+});
 
-  console.log(markdown);
-}
-
-main();
+describe('Local file path', () => {
+  it('should perform OCR on local file', async () => {
+    const markdown = await ocr({
+      filePath: "./test/trader-joes-receipt.jpg",
+      apiKey: process.env.TOGETHER_API_KEY,
+    });
+    expect(markdown).toBeTruthy();
+    expect(typeof markdown).toBe('string');
+  });
+});

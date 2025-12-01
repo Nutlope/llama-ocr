@@ -1,19 +1,17 @@
 import Together from "together-ai";
 import fs from "fs";
+import { ALL_VISION_MODELS, DEFAULT_MODEL, FREE_MODEL } from "./models";
 
 export async function ocr({
   filePath,
   apiKey = process.env.TOGETHER_API_KEY,
-  model = "Llama-3.2-90B-Vision",
+  model = DEFAULT_MODEL,
 }: {
   filePath: string;
   apiKey?: string;
-  model?: "Llama-3.2-90B-Vision" | "Llama-3.2-11B-Vision" | "free";
+  model?: (typeof ALL_VISION_MODELS)[number] | "free";
 }) {
-  const visionLLM =
-    model === "free"
-      ? "meta-llama/Llama-Vision-Free"
-      : `meta-llama/${model}-Instruct-Turbo`;
+  const visionLLM = model === "free" ? FREE_MODEL : model;
 
   const together = new Together({
     apiKey,
@@ -51,7 +49,6 @@ async function getMarkDown({
     messages: [
       {
         role: "user",
-        // @ts-expect-error
         content: [
           { type: "text", text: systemPrompt },
           {
