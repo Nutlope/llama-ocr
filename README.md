@@ -2,7 +2,7 @@
   <div>
     <h1 align="center">Llama OCR</h1>
   </div>
-	<p>An npm library to run OCR for free with Llama 3.2 Vision.</p>
+ 	<p>An npm library to run OCR with vision models from Together AI.</p>
 
 <a href="https://www.npmjs.com/package/llama-ocr"><img src="https://img.shields.io/npm/v/llama-ocr" alt="Current version"></a>
 
@@ -31,9 +31,9 @@ We have a hosted demo at [LlamaOCR.com](https://llamaocr.com/) where you can try
 
 ## How it works
 
-This library uses the free Llama 3.2 endpoint from [Together AI](https://togetherai.link/) to parse images and return markdown. Paid endpoints for Llama 3.2 11B and Llama 3.2 90B are also available for faster performance and higher rate limits.
+This library uses vision models from [Together AI](https://togetherai.link/) to parse images and return markdown. The free model is Apriel-1.5-15b-Thinker, and paid models like Llama 4 Scout (default), Llama 4 Maverick, and NIM versions of Llama 3.2 Vision are available for faster performance and higher rate limits.
 
-You can control this with the `model` option which is set to `meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8` by default but can also accept `free` or `Llama-3.2-11B-Vision`.
+You can control this with the `model` option which is set to `meta-llama/Llama-4-Scout-17B-16E-Instruct` by default but can also accept `free` or other model IDs.
 
 ## Roadmap
 
