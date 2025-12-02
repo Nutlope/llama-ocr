@@ -1,13 +1,24 @@
-import { describe, it, expect } from 'vitest';
-import { ocr } from '../src/index';
+import { describe, it, expect } from "vitest";
+import { ocr } from "../src/index";
 
-describe('Remote image URL', () => {
-  it('should perform OCR on remote image', async () => {
+describe("Remote image URL", () => {
+  it("should perform OCR on remote image", async () => {
     const markdown = await ocr({
       filePath: "https://i.ibb.co/6cjLQ6yp/Receipt-Swiss.jpg",
       apiKey: process.env.TOGETHER_API_KEY,
     });
     expect(markdown).toBeTruthy();
-    expect(typeof markdown).toBe('string');
+    expect(typeof markdown).toBe("string");
+  });
+
+  it("should perform OCR on transparent image", async () => {
+    const markdown = await ocr({
+      filePath:
+        "https://i.ibb.co/S7W2Pg4D/out-download-6-gif-removebg-preview.png",
+      apiKey: process.env.TOGETHER_API_KEY,
+    });
+    expect(markdown).toContain("120");
+    expect(markdown).toBeTruthy();
+    expect(typeof markdown).toBe("string");
   });
 });
