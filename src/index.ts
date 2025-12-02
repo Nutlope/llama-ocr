@@ -6,10 +6,12 @@ export async function ocr({
   filePath,
   apiKey = process.env.TOGETHER_API_KEY,
   model = DEFAULT_MODEL,
+  prompt,
 }: {
   filePath: string;
   apiKey?: string;
   model?: (typeof ALL_VISION_MODELS)[number] | "free";
+  prompt?: string;
 }) {
   const visionLLM = model === "free" ? FREE_MODEL : model;
 
@@ -17,7 +19,7 @@ export async function ocr({
     apiKey,
   });
 
-  let finalMarkdown = await getMarkDown({ together, visionLLM, filePath });
+  let finalMarkdown = await getMarkDown({ together, visionLLM, filePath, prompt });
 
   return finalMarkdown;
 }
@@ -26,10 +28,12 @@ async function getMarkDown({
   together,
   visionLLM,
   filePath,
+  prompt,
 }: {
   together: Together;
   visionLLM: string;
   filePath: string;
+  prompt?: string;
 }) {
   const systemPrompt = `Convert the provided image into Markdown format. Ensure that all content from the page is included, such as headers, footers, subtexts, images (with alt text if possible), tables, and any other elements.
 
@@ -38,11 +42,16 @@ async function getMarkDown({
   - Output Only Markdown: Return solely the Markdown content without any additional explanations or comments.
   - No Delimiters: Do not use code fences or delimiters like \`\`\`markdown.
   - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
+  ${prompt ? `\n\nAdditional Instructions:\n${prompt}` : ""}
   `;
 
-  const finalImageUrl = isRemoteFile(filePath)
+  const finalImageUrl = filePath.startsWith("data:")
     ? filePath
-    : `data:image/jpeg;base64,${encodeImage(filePath)}`;
+    : isRemoteFile(filePath)
+    ? filePath
+    : fs.existsSync(filePath)
+    ? `data:image/jpeg;base64,${encodeImage(filePath)}`
+    : `data:image/jpeg;base64,${filePath}`;
 
   const output = await together.chat.completions.create({
     model: visionLLM,

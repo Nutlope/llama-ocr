@@ -10,4 +10,15 @@ describe("Local file path", () => {
     expect(markdown).toBeTruthy();
     expect(typeof markdown).toBe("string");
   });
+
+  it("should perform OCR on base64 input", async () => {
+    const fs = require("fs");
+    const base64 = fs.readFileSync("./test/assets/trader-joes-receipt.jpg").toString("base64");
+    const markdown = await ocr({
+      filePath: base64,
+      apiKey: process.env.TOGETHER_API_KEY,
+    });
+    expect(markdown).toBeTruthy();
+    expect(typeof markdown).toBe("string");
+  });
 });
