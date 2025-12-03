@@ -29,6 +29,7 @@
     "Llama"
   ],
   "dependencies": {
-    "together-ai": "^0.31.1"
+    "pdf-parse": "^2.4.5",
+    "together-ai": "^0.31.2"
   }
 }
