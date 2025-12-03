@@ -2,6 +2,14 @@ import Together from "together-ai";
 import fs from "fs";
 import { ALL_VISION_MODELS, DEFAULT_MODEL, FREE_MODEL } from "./models";
 
+/**
+ * Performs OCR on an image and returns the content as Markdown.
+ * @param filePath - Path to a local image file, remote image URL, or base64-encoded image data (data:image/...;base64,...)
+ * @param apiKey - Together AI API key (defaults to TOGETHER_API_KEY env var)
+ * @param model - Vision model to use (defaults to DEFAULT_MODEL)
+ * @param prompt - Custom prompt for OCR processing
+ * @returns Markdown string of the image content
+ */
 export async function ocr({
   filePath,
   apiKey = process.env.TOGETHER_API_KEY,
@@ -50,8 +58,8 @@ async function getMarkDown({
     : isRemoteFile(filePath)
     ? filePath
     : fs.existsSync(filePath)
-    ? `data:image/jpeg;base64,${encodeImage(filePath)}`
-    : `data:image/jpeg;base64,${filePath}`;
+    ? `data:filePath/jpeg;base64,${encodeImage(filePath)}`
+    : `data:filePath/jpeg;base64,${filePath}`;
 
   const output = await together.chat.completions.create({
     model: visionLLM,
