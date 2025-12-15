@@ -1,0 +1,32 @@
+name: Test
+
+on:
+  push:
+    branches: [main, ocr-v2]
+  pull_request:
+    branches: [main, ocr-v2]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm test
+        env:
+          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
