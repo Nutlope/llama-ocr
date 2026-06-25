@@ -29,5 +29,6 @@
   ],
   "dependencies": {
     "together-ai": "^0.9.0"
-  }
+  },
+  "packageManager": "pnpm@11.7.0"
 }

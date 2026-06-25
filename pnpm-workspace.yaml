@@ -1,0 +1,8 @@
+packages:
+  - "."
+onlyBuiltDependencies:
+  - "esbuild"
+  - "lzo"
+allowBuilds:
+  "esbuild": true
+  "lzo": true
