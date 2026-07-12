@@ -30,7 +30,7 @@ We have a hosted demo at [LlamaOCR.com](https://llamaocr.com/) where you can try
 
 ## How it works
 
-This library uses the free Llama 3.2 endpoint from [Together AI](https://togetherai.link/) to parse images and return markdown. Paid endpoints for Llama 3.2 11B and Llama 3.2 90B are also available for faster performance and higher rate limits.
+This library uses the free Llama 3.2 endpoint from [Together AI](https://togetherai.link/?utm_source=llama-ocr&utm_medium=referral&utm_campaign=example-app) to parse images and return markdown. Paid endpoints for Llama 3.2 11B and Llama 3.2 90B are also available for faster performance and higher rate limits.
 
 You can control this with the `model` option which is set to `Llama-3.2-90B-Vision` by default but can also accept `free` or `Llama-3.2-11B-Vision`.
 
