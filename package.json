@@ -28,6 +28,7 @@
     "Llama"
   ],
   "dependencies": {
+    "commander": "^13.1.0",
     "together-ai": "^0.9.0"
   }
 }
