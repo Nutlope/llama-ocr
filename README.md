@@ -24,6 +24,7 @@ const markdown = await ocr({
   apiKey: process.env.TOGETHER_API_KEY, // Together AI API key
 });
 ```
+
 ## Hosted Demo
 
 We have a hosted demo at [LlamaOCR.com](https://llamaocr.com/) where you can try it out!
